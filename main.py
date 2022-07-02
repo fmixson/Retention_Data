@@ -6,12 +6,15 @@ from pathlib import Path
 df = pd.read_csv('D:/Work/Enrollment Management/Retention Data/Copy of Retention Data short_data.csv')
 pd.set_option('display.max_columns', None)
 
+
+df.sort_values(by=['EMPLID', 'STRM'], ascending=[True, False])
+
+print(df)
 student_id = []
 
 for i in range(len(df)-1):
     if df.loc[i, 'EMPLID'] not in student_id:
         student_id.append(df.loc[i,'EMPLID'])
-
 
 one_semester_student_list = []
 for id in student_id:
@@ -26,6 +29,10 @@ for id in student_id:
 
 boolean_df = df.EMPLID.isin(one_semester_student_list)
 one_semester_student_df = df[boolean_df]
+home = Path.home()
+save_file = Path(home, 'Desktop', 'One Semester Students.xlsx')
+one_semester_student_df.to_excel(save_file)
+print(one_semester_student_df)
 one_semester_student_df['Course'] = one_semester_student_df['SUBJECT'] + ' ' + one_semester_student_df['CATALOG_NBR']
 print(one_semester_student_df)
 Fall2020_Only = one_semester_student_df[one_semester_student_df['STRM']==1209]
