@@ -5,13 +5,12 @@ from pathlib import Path
 
 df = pd.read_csv('D:/Work/Enrollment Management/Retention Data/Copy of Retention Data short_data.csv')
 pd.set_option('display.max_columns', None)
-
-
 df.sort_values(by=['EMPLID', 'STRM'], ascending=[True, False])
-
+df['Course'] = df['SUBJECT'] + ' ' + df['CATALOG_NBR']
 print(df)
-student_id = []
 
+
+student_id = []
 for i in range(len(df)-1):
     if df.loc[i, 'EMPLID'] not in student_id:
         student_id.append(df.loc[i,'EMPLID'])
@@ -33,7 +32,7 @@ home = Path.home()
 save_file = Path(home, 'Desktop', 'One Semester Students.xlsx')
 one_semester_student_df.to_excel(save_file)
 print(one_semester_student_df)
-one_semester_student_df['Course'] = one_semester_student_df['SUBJECT'] + ' ' + one_semester_student_df['CATALOG_NBR']
+# one_semester_student_df['Course'] = one_semester_student_df['SUBJECT'] + ' ' + one_semester_student_df['CATALOG_NBR']
 print(one_semester_student_df)
 Fall2020_Only = one_semester_student_df[one_semester_student_df['STRM']==1209]
 Fall2020_Only_Reset = Fall2020_Only.reset_index(drop=True)
@@ -113,11 +112,6 @@ class CourseCountReport:
             CourseCountReport.count_df.loc[length, 'Course_Taken'] = self.course_taken
         print(CourseCountReport.count_df)
         return CourseCountReport.count_df
-
-
-
-
-
 
 
 for id in fall_student_id:
